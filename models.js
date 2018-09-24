@@ -31,24 +31,68 @@ const Vegetable = db.define('vegetables', {
     }
 })
 
-Plot.belongsToMany(Vegetable, {through: 'vegtable_plot'})
-Vegetable.belongsToMany(Plot, {through: 'vegtable_plot'})
+Plot.belongsToMany(Vegetable, {through: 'vegetable_plot'})
+Vegetable.belongsToMany(Plot, {through: 'vegetable_plot'})
 Gardener.belongsTo(Vegetable, {as: 'favorite_vegetable'})
+// Plot.belongsTo(Gardener, {as: 'gardenerId'})
+// Gardener.hasOne(Plot)
+
+const PlotVegetable = db.model("vegetable_plot");
 
 Vegetable.create({
     name: 'Carrot',
     color: 'Orange',
     planted_on: Date.now()
-}).then(Vegetable.create({
-    name: 'Corn',
-    color: 'Yellow',
-    planted_on: Date.now()
-})).then(Vegetable.create({
-    name: 'Broccoli',
-    color: 'Green',
-    planted_on: Date.now()
-})).catch(err =>{
-    console.log('not a veggie')
+}).then((vegetable) => {
+    return Gardener.create({
+        name: 'Bob',
+        age: '30',
+        favoriteVegetableId: vegetable.id
+    })
+}).then((gardener) => {
+    return Plot.create({
+        size: 2,
+        shaded: true
+    })
+}).then((plot) => {
+    return PlotVegetable.create({
+        plotId: plot.id,
+        vegetableId: carrot.id
+    })
+}).catch(err => {
+    console.log("something went wrong")
 })
+
+// Vegetable.create({
+//     name: 'Carrot',
+//     color: 'Orange',
+//     planted_on: Date.now()
+// }).then(Vegetable.create({
+//     name: 'Corn',
+//     color: 'Yellow',
+//     planted_on: Date.now()
+// })).then(Vegetable.create({
+//     name: 'Broccoli',
+//     color: 'Green',
+//     planted_on: Date.now()
+// })).catch(err =>{
+//     console.log('not a veggie')
+// })
+
+// Gardener.create({
+//     name: 'Bob',
+//     age: '30',
+//     favoriteVegetableId: Vegetable.id
+// }).then(Gardener.create({
+//     name: 'Jim',
+//     age: '40',
+//     favoriteVegetableId: Vegetable.id
+// })).then(Gardener.create({
+//     name: 'Guy',
+//     age: '50',
+//     favoriteVegetableId: Vegetable.id
+// })).catch(err => {
+//     console.log('something went wrong')
+// })
 
 module.exports = db
