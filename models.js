@@ -57,7 +57,7 @@ Vegetable.create({
 }).then((plot) => {
     return PlotVegetable.create({
         plotId: plot.id,
-        vegetableId: carrot.id
+        vegetableId: 
     })
 }).catch(err => {
     console.log("something went wrong")

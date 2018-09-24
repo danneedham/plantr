@@ -7,8 +7,3 @@ const seed = db.sync({force: true}).then(() => {
     db.close()
 }) 
 
-Vegetable.create({
-    name: 'Carrot',
-    color: 'Orange',
-    planted_on: Date.now()
-})
